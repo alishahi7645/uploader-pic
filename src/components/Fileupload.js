@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Progress from "./Progress";
 import Showdata from "./Showdata";
+import axios from 'axios'
 
 function Fileupload() {
     const [file , setFile] = useState("");
@@ -10,9 +11,24 @@ function Fileupload() {
         setFileName(e.target.files[0].name)
     }
     console.log(file);
+    const handleSubmit = e =>{
+        e.preventDefault();
+        console.log('submit');
+        const formData = new FormData();
+        formData.append('image', file);
+        axios.post('http://localhost:8000/api/upload', formData, {
+            headers:{ 
+                "Content-Type" : "multipart/form-data"
+            }
+        })
+        .then(res =>{
+            console.log(res);
+        })
+        .catch()
+    }
   return (
     <>
-      <form action="">
+      <form action="" onSubmit={handleSubmit}>    
         <div className="form-group mt-5">
           <label htmlFor="customfile" className="custom-file-label mb-2">
            {fileName}
